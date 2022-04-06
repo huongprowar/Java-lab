@@ -1,0 +1,80 @@
+ void f4() throws Exception {
+        clear();
+        loadData(13);;
+        String fname = "f4.txt";
+        File g123 = new File(fname);
+        if (g123.exists()) {
+            g123.delete();
+        }
+        RandomAccessFile f = new RandomAccessFile(fname, "rw");
+        breadth(root, f);
+        f.writeBytes("\r\n");
+        //------------------------------------------------------------------------------------
+        /*You must keep statements pre-given in this function.
+      Your task is to insert statements here, just after this comment,
+      to complete the question in the exam paper.*/
+        max = 0;
+        breadth2(root, f);
+
+        Node q123 = null;
+        Queue q = new Queue();
+        q.enqueue(root);
+        Node r;
+        while (!q.isEmpty()) {
+            r = q.dequeue();
+            if (r.info.color == max) {
+                q123 = r;
+            }
+            if (r.left != null) {
+                q.enqueue(r.left);
+            }
+            if (r.right != null) {
+                q.enqueue(r.right);
+            }
+        }
+
+        Node fa1 = father2(q123.info.color);
+        Node r12 = rotateLeft(fa1);
+        Node fa2 = father2(fa1.info.color);
+        if (fa2 == null) {
+            root = r12;
+        } else {
+            if (fa2.left == fa1) {
+                fa2.left = r12;
+            } else {
+                fa2.right = r12;
+            }
+        }
+        //------------------------------------------------------------------------------------
+        breadth(root, f);
+        f.writeBytes("\r\n");
+        f.close();
+    }
+
+    Node rotateLeft(Node p) {
+        if (p == null || p.right == null) {
+            return (p);
+        }
+        Node q = p.right;
+        p.right = q.left;
+        q.left = p;
+        return (q);
+    }
+
+    Node father2(int xColor) {
+        Node f, p;
+        f = null;
+        p = root;
+        while (p != null) {
+            if (p.info.color == xColor) {
+                break;
+            }
+            f = p;
+            if (xColor < p.info.color) {
+                p = p.left;
+            } else {
+                p = p.right;
+            }
+        }
+        return (f);
+    }

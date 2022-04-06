@@ -1,0 +1,76 @@
+    void f4() throws Exception {
+        clear();
+        loadData(13);;
+        String fname = "f4.txt";
+        File g123 = new File(fname);
+        if (g123.exists()) {
+            g123.delete();
+        }
+        RandomAccessFile f = new RandomAccessFile(fname, "rw");
+        breadth(root, f);
+        f.writeBytes("\r\n");
+        //------------------------------------------------------------------------------------
+        /*You must keep statements pre-given in this function.
+      Your task is to insert statements here, just after this comment,
+      to complete the question in the exam paper.*/
+
+        q123 = null;
+        inOrder4(root, f);
+        Node r = rotateLeft(q123);
+        Node fa = father(q123);
+        if (fa == null) {
+            root = r;
+        } else {
+            if (fa.left == q123) {
+                fa.left = r;
+            } else {
+                fa.right = r;
+            }
+        }
+        //------------------------------------------------------------------------------------
+        breadth(root, f);
+        f.writeBytes("\r\n");
+        f.close();
+    }
+
+    void inOrder4(Node p, RandomAccessFile f) throws Exception {
+        if (p == null) {
+            return;
+        }
+        inOrder4(p.left, f);
+        if (p.left != null && p.right != null && count == 0) {
+            q123 = p;
+            count++;
+            return;
+        }
+        inOrder4(p.right, f);
+        return;
+    }
+
+    Node father(Node xPrice) {
+        Node f, p;
+        f = null;
+        p = root;
+        while (p != null) {
+            if (p.info.type == xPrice.info.type) {
+                break;
+            }
+            f = p;
+            if (xPrice.info.type < p.info.type) {
+                p = p.left;
+            } else {
+                p = p.right;
+            }
+        }
+        return (f);
+    }
+
+    Node rotateLeft(Node p) {
+        if (p == null || p.right == null) {
+            return (p);
+        }
+        Node q = p.right;
+        p.right = q.left;
+        q.left = p;
+        return (q);
+    }
